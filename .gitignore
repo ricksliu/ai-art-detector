@@ -43,3 +43,4 @@ frontend/typings
 **/__pycache__
 **/venv
 backend/db.sqlite3
+backend/.env
