@@ -12,4 +12,4 @@ class RequestImage(models.Model):
         self.image = ''
 
     def __str__(self):
-        return self.filename if self.filename else self.url
+        return self.filename

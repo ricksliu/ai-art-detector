@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { API_URL } from '../constants';
@@ -12,12 +12,8 @@ export class ApiService {
 
   constructor(private http: HttpClient) { }
 
-  postImage(): Observable<RequestImage> {
-    let body: RequestImage =  {
-      image: '',
-      filename: 'test.jpg',
-      url: undefined,
-    };
+  postImage(image: ArrayBuffer, filename: string, url?: string): Observable<RequestImage> {
+    const body: RequestImage = { image, filename, url };
     return this.http.post<RequestImage>(API_URL + 'images/', body);
   }
 }

@@ -1,5 +1,5 @@
 export interface RequestImage {
-  image: string;
+  image: ArrayBuffer;
   filename: string;
   url?: string;
   timestamp?: Date;
