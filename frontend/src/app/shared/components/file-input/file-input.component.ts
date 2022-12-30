@@ -7,6 +7,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class FileInputComponent implements OnInit {
   @Input() accept = '';
+  @Input() label = '';
   @Output() inputEvent = new EventEmitter<File[]>();
 
   constructor() { }
@@ -14,12 +15,12 @@ export class FileInputComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onSubmit(event: Event) {
+  onSubmit(event: Event): void {
     const files: File[] = Array.from((event.target as HTMLInputElement).files ?? []);
     this.inputEvent.emit(files);
   }
 
-  onDrop(event: DragEvent) {
+  onDrop(event: DragEvent): void {
     event.preventDefault();
     const files: File[] = event.dataTransfer?.items
       ? Array.from(event.dataTransfer?.items ?? []).filter(item => item.kind === 'file').map(item => item.getAsFile()).filter(file => file) as File[]
@@ -27,7 +28,7 @@ export class FileInputComponent implements OnInit {
     this.inputEvent.emit(files);
   }
 
-  onDragover(event: Event) {
+  onDragover(event: Event): void {
     event.preventDefault();
   }
 }

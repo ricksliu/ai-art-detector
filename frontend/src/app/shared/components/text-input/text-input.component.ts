@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-text-input',
@@ -6,6 +6,8 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./text-input.component.scss']
 })
 export class TextInputComponent implements OnInit {
+  @Input() placeholder = '';
+  @Input() submitLabel = '';
   @Output() inputEvent = new EventEmitter<string>();
   text = '';
 
@@ -14,7 +16,7 @@ export class TextInputComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onKeyup(event: KeyboardEvent) {
+  onKeyup(event: KeyboardEvent): void {
     if (event.key === 'Enter') {
       this.onSubmit();
     } else {
@@ -22,7 +24,7 @@ export class TextInputComponent implements OnInit {
     }
   }
 
-  onSubmit() {
+  onSubmit(): void {
     this.inputEvent.emit(this.text);
   }
 }

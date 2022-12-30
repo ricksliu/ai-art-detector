@@ -1,1 +1,16 @@
-<router-outlet></router-outlet>
+<div class="header">AI Art Detector</div>
+<div class="content">
+  <router-outlet></router-outlet>
+</div>
+
+<div class="errors">
+  <ng-container *ngFor="let error of errors(); let i = index;">
+    <app-toast
+      [type]="'error'"
+      [message]="error"
+      (closeEvent)="onCloseError(i)"
+    ></app-toast>
+  </ng-container>
+</div>
+
+<app-loader [show]="showLoader()"></app-loader>

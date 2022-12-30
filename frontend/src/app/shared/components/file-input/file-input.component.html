@@ -1,17 +1,15 @@
-<div class="file-input-container">
-  <input
-    #fileInputHidden
-    class="file-input-hidden"
-    type="file"
-    accept="{{accept}}"
-    (change)="onSubmit($event)"
-  >
-  <div
-    class="file-input"
-    (click)="fileInputHidden.click()"
-    (drop)="onDrop($event)"
-    (dragover)="onDragover($event)"
-  >
-    drag and drop or click
-  </div>
+<input
+  #fileInputHidden
+  class="file-input-hidden"
+  type="file"
+  accept="{{accept}}"
+  (change)="onSubmit($event)"
+>
+<div
+  class="file-input"
+  (click)="fileInputHidden.click()"
+  (drop)="onDrop($event)"
+  (dragover)="onDragover($event)"
+>
+  <div class="file-input-label">{{label}}</div>
 </div>

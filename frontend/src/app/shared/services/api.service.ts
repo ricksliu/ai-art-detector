@@ -12,8 +12,7 @@ export class ApiService {
 
   constructor(private http: HttpClient) { }
 
-  postImage(image: ArrayBuffer, filename: string, url?: string): Observable<RequestImage> {
-    const body: RequestImage = { image, filename, url };
+  postImage(body: RequestImage): Observable<RequestImage> {
     return this.http.post<RequestImage>(API_URL + 'images/', body);
   }
 }

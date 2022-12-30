@@ -1,0 +1,28 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+.header {
+  flex: 0 0 auto;
+  padding: var(--spacing);
+  background-color: var(--emphasis-colour);
+  font-size: var(--title-size);
+  line-height: var(--title-size);
+  font-weight: bold;
+  color: var(--font-colour-light);
+  text-align: center;
+}
+
+.content {
+  flex: 1 1 auto;
+}
+
+.errors {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
