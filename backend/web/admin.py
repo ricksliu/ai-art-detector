@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import RequestImage
+from .models import WebImage
 
 
-admin.site.register(RequestImage)
+admin.site.register(WebImage)

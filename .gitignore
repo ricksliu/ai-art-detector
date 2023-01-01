@@ -44,3 +44,5 @@ frontend/typings
 **/venv
 backend/db.sqlite3
 backend/.env
+data/**/*.*
+!**/.gitkeep

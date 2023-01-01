@@ -11,7 +11,7 @@
 }
 
 .toast-message {
-  flex: 1 1 auto;
+  flex: 1 1 0;
   padding: calc(var(--spacing) / 2);
   font-size: var(--caption-size);
   line-height: var(--caption-size);
@@ -29,7 +29,7 @@
   &:after {
     content: "\00d7";
     font-size: calc(var(--caption-size) * 2);
-    line-height: calc(var(--caption-size));
+    line-height: var(--caption-size);
     vertical-align: baseline;
     color: var(--font-colour-light);
   }

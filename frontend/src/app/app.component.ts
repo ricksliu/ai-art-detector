@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { DataService } from './shared/services/data.service';
 
@@ -10,10 +11,18 @@ import { DataService } from './shared/services/data.service';
 export class AppComponent {
   title = 'AI Art Detector';
 
-  constructor(private dataService: DataService) { }
+  constructor(private router: Router, private dataService: DataService) { }
 
   ngOnInit(): void {
     this.dataService.clear();
+  }
+
+  showNav(): boolean {
+    return this.router.url !== '/home';
+  }
+
+  onNavBack(): void {
+    this.router.navigateByUrl('home');
   }
 
   showLoader(): boolean {

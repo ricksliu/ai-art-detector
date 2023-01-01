@@ -1,4 +1,14 @@
 <div class="header">AI Art Detector</div>
+
+<div *ngIf="showNav()" class="nav">
+  <button
+    class="nav-back"
+    type="button"
+    (click)="onNavBack()"
+  >Back</button>
+  <div class="nav-spacer"></div>
+</div>
+
 <div class="content">
   <router-outlet></router-outlet>
 </div>

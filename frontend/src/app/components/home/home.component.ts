@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { DataService } from 'src/app/shared/services/data.service';
 import { ApiService } from '../../shared/services/api.service';
 import { ImageService } from '../../shared/services/image.service';
-import { RequestImage } from 'src/app/shared/models/api.model';
+import { ImageRequest } from 'src/app/shared/models/api.model';
 import { ERROR_API, ERROR_FILE_NOT_IMAGE, ERROR_IMAGE_FROM_URL } from 'src/app/shared/constants';
 
 @Component({
@@ -17,14 +17,14 @@ export class HomeComponent implements OnInit {
   constructor(private router: Router, private dataService: DataService, private apiService: ApiService, private imageService: ImageService) { }
 
   ngOnInit(): void {
+    this.dataService.clear();
   }
 
-  private postImage(image: ArrayBuffer, filename: string, url?: string): void {
-    const body: RequestImage = { image, filename, url };
-    this.dataService.requestImage = body;
-    this.apiService.postImage(body).subscribe({
+  private postImage(image: ImageRequest): void {
+    this.dataService.imageRequest = image;
+    this.apiService.postImage(image).subscribe({
       next: response => {
-        this.dataService.responseImage = response;
+        this.dataService.imageResponse = response;
         this.dataService.hideLoader();
         this.router.navigateByUrl('result');
       },
@@ -38,7 +38,7 @@ export class HomeComponent implements OnInit {
   onUrl(url: string): void {
     this.dataService.showLoader();
     this.imageService.getImageFromUrl(url).then(image => {
-      this.postImage(image, url.split('/').pop() as string, url);
+      this.postImage(image);
     }).catch(() => {
       this.dataService.hideLoader();
       this.dataService.addError(ERROR_IMAGE_FROM_URL);
@@ -52,8 +52,8 @@ export class HomeComponent implements OnInit {
     }
 
     this.dataService.showLoader();
-    this.imageService.getImageFromFile(files[0]).then(image => {
-      this.postImage(image, files[0].name);
+    this.imageService.getImageFromBlob(files[0], files[0].name).then(image => {
+      this.postImage(image);
     }).catch(() => {
       this.dataService.hideLoader();
       this.dataService.addError(ERROR_IMAGE_FROM_URL);

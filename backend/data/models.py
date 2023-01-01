@@ -8,7 +8,7 @@ class SampleImage(models.Model):
     src_id = models.IntegerField()
     src_url = models.URLField()
     src_timestamp = models.DateTimeField()
-    is_ai_generated = models.BooleanField()
+    src_is_ai_generated = models.BooleanField()
 
     class Meta:
         unique_together = ('src', 'src_id')

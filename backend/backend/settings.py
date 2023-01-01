@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 from decouple import config
+from enum import Enum
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -83,7 +84,7 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': BASE_DIR / '../data/db.sqlite3',
     }
 }
 
@@ -132,3 +133,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:4200",
 ]
+
+# Other constants
+
+SAVE_WEB_IMAGES = False
+
+SAMPLE_IMAGES_DIR = BASE_DIR / '../data/sample_images'
+
+WEB_IMAGES_DIR = BASE_DIR / '../data/web_images'

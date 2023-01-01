@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { RequestImage } from '../models/api.model';
+import { ImageRequest, ImageResponse } from '../models/api.model';
 
 @Injectable({
   providedIn: 'root'
@@ -8,16 +8,16 @@ import { RequestImage } from '../models/api.model';
 export class DataService {
   loader = false;
   errors: string[] = [];
-  requestImage?: RequestImage;
-  responseImage?: RequestImage;
+  imageRequest?: ImageRequest;
+  imageResponse?: ImageResponse;
 
   constructor() { }
 
   clear(): void {
     this.loader = false;
     this.errors = [];
-    this.requestImage = undefined;
-    this.responseImage = undefined;
+    this.imageRequest = undefined;
+    this.imageResponse = undefined;
   }
 
   showLoader(): void {

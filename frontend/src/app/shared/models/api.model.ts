@@ -1,9 +1,19 @@
-export interface RequestImage {
-  image: ArrayBuffer;
+export interface ImageRequest {
   filename: string;
   url?: string;
-  timestamp?: Date;
-  is_ai_generated?: boolean;
+
+  image: string;
+  size: number;
+  type: string;
+  width: number;
+  height: number;
 }
 
-export interface RequestImageArray extends Array<RequestImage> { }
+export interface ImageResponse {
+  filename: string;
+  url?: string;
+  timestamp: Date;
+  model_version?: string;
+  model_target?: number;
+  model_is_ai_generated?: boolean;
+}

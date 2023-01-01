@@ -16,8 +16,44 @@
   text-align: center;
 }
 
+.nav {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+
+  .nav-back {
+    flex: 0 0 auto;
+    padding: calc(var(--spacing) / 2) var(--spacing);
+    background-color: var(--background-colour);
+    border-style: none;
+    font-size: var(--caption-size);
+    line-height: var(--caption-size);
+    cursor: pointer;
+
+    &:before {
+      content: "\003c";
+      font-size: calc(var(--caption-size) * 1.5);
+      line-height: var(--caption-size);
+      vertical-align: baseline;
+      margin-right: calc(var(--spacing) / 2);
+    }
+
+    &:hover {
+      background-color: var(--background-colour-dark);
+    }
+
+    &:active {
+      background-color: var(--background-colour);
+    }
+  }
+
+  .nav-spacer {
+    flex: 1 1 0;
+  }
+}
+
 .content {
-  flex: 1 1 auto;
+  flex: 1 1 0;
 }
 
 .errors {
