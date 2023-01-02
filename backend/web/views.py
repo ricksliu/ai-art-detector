@@ -2,9 +2,9 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from django.conf import settings
 from .serializers import WebImageSerializer
 from shared import utility
+from django.conf import settings
 
 
 class WebImageList(APIView):
@@ -21,8 +21,7 @@ class WebImageList(APIView):
             'model_is_ai_generated': model_is_ai_generated,
         })
         if serializer.is_valid():
-            if settings.SAVE_WEB_IMAGES:
-                serializer.save()
-                image.save(settings.WEB_IMAGES_DIR / '{}.{}'.format(serializer.data.get('id'), request.data.get('type')))
+            serializer.save()
+            image.save(settings.WEB_IMAGES_DIR / '{}.{}'.format(serializer.data.get('id'), request.data.get('type')))
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY')
+SECRET_KEY = config('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -134,10 +134,24 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:4200",
 ]
 
-# Other constants
 
-SAVE_WEB_IMAGES = False
+# Program constants
 
-SAMPLE_IMAGES_DIR = BASE_DIR / '../data/sample_images'
+# Data
+DATA_DIR = '../data/'
+DATASET_PATH = DATA_DIR + 'dataset.parquet'
 
-WEB_IMAGES_DIR = BASE_DIR / '../data/web_images'
+# LAION
+NUM_LAION_SAMPLES = 5000
+LAION_DOWNLOAD_DIR = DATA_DIR + 'laion_download/'
+LAION_METADATA_URL = 'https://huggingface.co/datasets/ChristophSchuhmann/improved_aesthetics_6.5plus/resolve/main/data/train-00000-of-00001-6f24a7497df494ae.parquet'
+LAION_METADATA_PATH = LAION_DOWNLOAD_DIR + 'laion-metadata.parquet'
+LAION_TEMP_PATH = DATA_DIR + 'laion-temp.parquet'
+LAION_DOWNLOAD_CMD = 'img2dataset --url_list {} --input_format "parquet" --output_folder {} --output_format parquet --processes_count 16 --thread_count 64 --image_size 256 --resize_mode="keep_ratio" --skip_reencode=True --url_col "URL" --caption_col "TEXT"'.format(LAION_TEMP_PATH, LAION_DOWNLOAD_DIR)
+
+# DiffusionDB
+DIFFUSIONDB_SUBSET = '2m_random_5k'
+DIFFUSIONDB_DOWNLOAD_PATH = DATA_DIR + 'diffusiondb_download/dataset.parquet'
+
+# Web
+WEB_IMAGES_DIR = DATA_DIR + 'web_images/'
