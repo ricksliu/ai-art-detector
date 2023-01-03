@@ -24,13 +24,15 @@ def main():
 
     print('\nCreating model')
     model = keras.models.Sequential()
-    model.add(keras.layers.Conv2D(16, (3, 3), activation='relu', input_shape=train_x[0].shape))
+    model.add(keras.layers.Conv2D(32, (3, 3), activation='relu', input_shape=train_x[0].shape))
     model.add(keras.layers.MaxPooling2D((2, 2)))
-    model.add(keras.layers.Conv2D(16, (3, 3), activation='relu'))
+    model.add(keras.layers.Conv2D(48, (3, 3), activation='relu'))
+    model.add(keras.layers.MaxPooling2D((2, 2)))
+    model.add(keras.layers.Conv2D(64, (3, 3), activation='relu'))
     model.add(keras.layers.MaxPooling2D((2, 2)))
     model.add(keras.layers.Flatten())
+    model.add(keras.layers.Dense(64, activation='relu'))
     model.add(keras.layers.Dense(1, activation='sigmoid'))
-    print(model.summary())
 
     model.compile(
         optimizer='adam',

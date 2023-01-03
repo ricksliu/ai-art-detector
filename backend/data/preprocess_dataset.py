@@ -29,6 +29,11 @@ def main():
     print('\nCropping images')
     df['image'] = df['image'].apply(lambda i: utility.center_crop_np_image(i, settings.IMAGE_LEN))
 
+    print('\nReflecting images')
+    df_reflected = df.copy()
+    df_reflected['image'] = df_reflected['image'].apply(lambda i: np.flip(i, axis=1))
+    df = pd.concat([df, df_reflected]).reset_index(drop=True)
+
     print('\nSplitting dataset')
     df = df.sample(frac=1).reset_index(drop=True)
     train, test = utility.split_np_arr(df, 0.8)

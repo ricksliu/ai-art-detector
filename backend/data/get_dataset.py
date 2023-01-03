@@ -7,7 +7,6 @@ from datasets import load_dataset
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'backend.settings')
 from django.conf import settings
 from shared import utility
-import io
 
 def download_laion_dataset():
     if not os.path.isfile(settings.LAION_METADATA_PATH):

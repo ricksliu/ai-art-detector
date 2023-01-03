@@ -138,7 +138,7 @@ CORS_ALLOWED_ORIGINS = [
 # Program constants
 
 # Model
-MODEL_VER = '20230102-232251'
+MODEL_VER = '20230103-004413'
 
 # Data
 DATA_DIR = '../data/'
