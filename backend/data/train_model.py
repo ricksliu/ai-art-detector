@@ -4,7 +4,7 @@ import os
 import numpy as np
 import pandas as pd
 from tensorflow import keras
-from matplotlib import pyplot
+from matplotlib import pyplot as plt
 from datetime import datetime
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'backend.settings')
@@ -18,6 +18,8 @@ def read_dataset(path):
 
 
 def main():
+    MODEL_PATH = settings.MODELS_DIR + '{}/'.format(datetime.now().strftime('%Y%m%d-%H%M%S'))
+
     print('Loading dataset')
     train_x, train_y = read_dataset(settings.TRAIN_SET_PATH)
     test_x, test_y = read_dataset(settings.TEST_SET_PATH)
@@ -49,26 +51,27 @@ def main():
     history = model.fit(train_x, train_y, validation_data=(test_x, test_y), epochs=100, verbose=1, callbacks=callback)
 
     print('\Testing model')
-    _, train_acc = model.evaluate(train_x, train_y, verbose=1)
-    _, test_acc = model.evaluate(test_x, test_y, verbose=1)
-    print('Train accuracy: {:.4f}, Test accuracy: {:.4f}'.format(train_acc, test_acc))
-
-    pyplot.subplot(211)
-    pyplot.title('Loss')
-    pyplot.plot(history.history['loss'], label='train')
-    pyplot.plot(history.history['val_loss'], label='test')
-    pyplot.legend()
-
-    pyplot.subplot(212)
-    pyplot.title('Accuracy')
-    pyplot.plot(history.history['accuracy'], label='train')
-    pyplot.plot(history.history['val_accuracy'], label='test')
-    pyplot.legend()
-
-    pyplot.show()
+    train_loss, train_acc = model.evaluate(train_x, train_y, verbose=1)
+    test_loss, test_acc = model.evaluate(test_x, test_y, verbose=1)
 
     print('Saving model')
-    keras.models.save_model(model, settings.MODELS_DIR + '{}'.format(datetime.now().strftime('%Y%m%d-%H%M%S')))
+    keras.models.save_model(model, MODEL_PATH)
+
+    fig, ax = plt.subplots(2, 1)
+
+    ax[0].set_title('Loss\ntrain: {:.4f}, test: {:.4f}'.format(train_loss, test_loss))
+    ax[0].plot(history.history['loss'], label='train')
+    ax[0].plot(history.history['val_loss'], label='test')
+    ax[0].legend()
+
+    ax[1].set_title('Accuracy\ntrain: {:.4f}, test: {:.4f}'.format(train_acc, test_acc))
+    ax[1].plot(history.history['accuracy'], label='train')
+    ax[1].plot(history.history['val_accuracy'], label='test')
+    ax[1].legend()
+
+    fig.tight_layout(pad=2)
+    fig.savefig(MODEL_PATH + 'plt.png')
+    fig.show()
 
 
 if __name__ == "__main__":
