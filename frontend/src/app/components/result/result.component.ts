@@ -16,13 +16,13 @@ export class ResultComponent implements OnInit {
   }
 
   confidence(): number {
-    if (typeof this.dataService.imageResponse?.model_target === 'undefined') {
+    if (typeof this.dataService.imageResponse?.model_prediction === 'undefined') {
       return 0;
     }
     if (this.dataService.imageResponse?.model_is_ai_generated) {
-      return Math.floor(100 * this.dataService.imageResponse?.model_target);
+      return Math.floor(200 * (this.dataService.imageResponse?.model_prediction - 0.5));
     }
-    return Math.floor(100 - 100 * this.dataService.imageResponse?.model_target);
+    return Math.floor(200 * (0.5 - this.dataService.imageResponse?.model_prediction));
   }
 
   imageRequest(): ImageRequest | undefined {

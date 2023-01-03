@@ -137,9 +137,17 @@ CORS_ALLOWED_ORIGINS = [
 
 # Program constants
 
+# Model
+MODEL_VER = '20230102-232251'
+
 # Data
 DATA_DIR = '../data/'
 DATASET_PATH = DATA_DIR + 'dataset.parquet'
+TRAIN_SET_PATH = DATA_DIR + 'train-set.csv'
+TEST_SET_PATH = DATA_DIR + 'test-set.csv'
+MODELS_DIR = DATA_DIR + 'models/'
+MODELS_PATH = MODELS_DIR + MODEL_VER
+IMAGE_LEN = 100
 
 # LAION
 NUM_LAION_SAMPLES = 5000
@@ -147,7 +155,7 @@ LAION_DOWNLOAD_DIR = DATA_DIR + 'laion_download/'
 LAION_METADATA_URL = 'https://huggingface.co/datasets/ChristophSchuhmann/improved_aesthetics_6.5plus/resolve/main/data/train-00000-of-00001-6f24a7497df494ae.parquet'
 LAION_METADATA_PATH = LAION_DOWNLOAD_DIR + 'laion-metadata.parquet'
 LAION_TEMP_PATH = DATA_DIR + 'laion-temp.parquet'
-LAION_DOWNLOAD_CMD = 'img2dataset --url_list {} --input_format "parquet" --output_folder {} --output_format parquet --processes_count 16 --thread_count 64 --image_size 256 --resize_mode="keep_ratio" --skip_reencode=True --url_col "URL" --caption_col "TEXT"'.format(LAION_TEMP_PATH, LAION_DOWNLOAD_DIR)
+LAION_DOWNLOAD_CMD = 'img2dataset --url_list {} --input_format "parquet" --output_folder {} --output_format parquet --processes_count 16 --thread_count 64 --image_size {} --resize_mode="keep_ratio" --skip_reencode=True --url_col "URL" --caption_col "TEXT"'.format(LAION_TEMP_PATH, LAION_DOWNLOAD_DIR, IMAGE_LEN)
 
 # DiffusionDB
 DIFFUSIONDB_SUBSET = '2m_random_5k'

@@ -14,6 +14,6 @@ export interface ImageResponse {
   url?: string;
   timestamp: Date;
   model_version?: string;
-  model_target?: number;
+  model_prediction?: number;
   model_is_ai_generated?: boolean;
 }
