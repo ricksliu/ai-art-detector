@@ -135,31 +135,41 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 
-# Program constants
+# Program settings (can customize)
+MODEL_VER = '20230103-004413'  # ML model used by api
+DOWNLOAD_IMAGE_LEN = 200  # Min width and height of images when downloading
+IMAGE_LEN = 100  # Width and height of images when training
+DATASETS = {  # Datasets used to construct combined dataset
+    'laion': {
+        'metadata_src': 'url',
+        'metadata_type': 'parquet',
+        'metadata': [
+            'https://huggingface.co/datasets/ChristophSchuhmann/improved_aesthetics_6plus/resolve/main/data/train-00000-of-00007-29aec9150af50f9f.parquet',
+            'https://huggingface.co/datasets/ChristophSchuhmann/improved_aesthetics_6plus/resolve/main/data/train-00001-of-00007-060633a36bcf0956.parquet',
+            'https://huggingface.co/datasets/ChristophSchuhmann/improved_aesthetics_6plus/resolve/main/data/train-00002-of-00007-709151a2715d894d.parquet',
+            'https://huggingface.co/datasets/ChristophSchuhmann/improved_aesthetics_6plus/resolve/main/data/train-00003-of-00007-2dc95366d4278bb8.parquet',
+            'https://huggingface.co/datasets/ChristophSchuhmann/improved_aesthetics_6plus/resolve/main/data/train-00004-of-00007-f06fcc8b41bf5fdf.parquet',
+            'https://huggingface.co/datasets/ChristophSchuhmann/improved_aesthetics_6plus/resolve/main/data/train-00005-of-00007-f1ec12a5b5b3e6c0.parquet',
+            'https://huggingface.co/datasets/ChristophSchuhmann/improved_aesthetics_6plus/resolve/main/data/train-00006-of-00007-57e09e020b9c2df4.parquet',
+        ],
+        'samples': 10000,
+        'is_ai_generated': False,
+    },
+    'openprompts': {
+        'metadata_src': 'gdrive',
+        'metadata_type': 'csv',
+        'metadata': [
+            'https://drive.google.com/uc?id=1c4WHxtlzvHYd0UY5WCMJNn2EO-Aiv2A0',
+        ],
+        'samples': 10000,
+        'is_ai_generated': True,
+    },
+}
 
-# Model
-MODEL_VER = '20230103-004413'
-
-# Data
+# Program constants (do not need to customize)
 DATA_DIR = '../data/'
 DATASET_PATH = DATA_DIR + 'dataset.parquet'
 TRAIN_SET_PATH = DATA_DIR + 'train-set.csv'
 TEST_SET_PATH = DATA_DIR + 'test-set.csv'
 MODELS_DIR = DATA_DIR + 'models/'
-MODELS_PATH = MODELS_DIR + MODEL_VER
-IMAGE_LEN = 100
-
-# LAION
-NUM_LAION_SAMPLES = 5000
-LAION_DOWNLOAD_DIR = DATA_DIR + 'laion_download/'
-LAION_METADATA_URL = 'https://huggingface.co/datasets/ChristophSchuhmann/improved_aesthetics_6.5plus/resolve/main/data/train-00000-of-00001-6f24a7497df494ae.parquet'
-LAION_METADATA_PATH = LAION_DOWNLOAD_DIR + 'laion-metadata.parquet'
-LAION_TEMP_PATH = DATA_DIR + 'laion-temp.parquet'
-LAION_DOWNLOAD_CMD = 'img2dataset --url_list {} --input_format "parquet" --output_folder {} --output_format parquet --processes_count 16 --thread_count 64 --image_size {} --resize_mode="keep_ratio" --skip_reencode=True --url_col "URL" --caption_col "TEXT"'.format(LAION_TEMP_PATH, LAION_DOWNLOAD_DIR, IMAGE_LEN)
-
-# DiffusionDB
-DIFFUSIONDB_SUBSET = '2m_random_5k'
-DIFFUSIONDB_DOWNLOAD_PATH = DATA_DIR + 'diffusiondb_download/dataset.parquet'
-
-# Web
 WEB_IMAGES_DIR = DATA_DIR + 'web_images/'

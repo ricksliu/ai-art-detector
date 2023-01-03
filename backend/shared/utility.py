@@ -5,10 +5,18 @@ import requests
 import shutil
 import ast
 import numpy as np
+from pathlib import Path
+
+
+def create_path(path, is_file_path=False):
+    if is_file_path:
+        path = '/'.join(path.split('/')[:-1])
+    Path(path).mkdir(parents=True, exist_ok=True)
 
 
 def download_file(url, path):
     with requests.get(url, stream=True) as r:
+        create_path(path, is_file_path=True)
         with open(path, 'wb') as f:
             shutil.copyfileobj(r.raw, f)
 

@@ -1,4 +1,5 @@
 # Script to train model
+# python -m data.train_model
 
 import os
 import numpy as np

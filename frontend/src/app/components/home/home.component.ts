@@ -29,6 +29,7 @@ export class HomeComponent implements OnInit {
         this.router.navigateByUrl('result');
       },
       error: () => {
+        this.dataService.imageRequest = undefined;
         this.dataService.hideLoader();
         this.dataService.addError(ERROR_API);
       },

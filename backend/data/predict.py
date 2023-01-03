@@ -9,7 +9,7 @@ from django.conf import settings
 from shared import utility
 
 
-model = keras.models.load_model(settings.MODELS_PATH, compile = True)
+model = keras.models.load_model(settings.MODELS_DIR + settings.MODEL_VER, compile = True)
 
 
 def predict_is_ai_generated(image):

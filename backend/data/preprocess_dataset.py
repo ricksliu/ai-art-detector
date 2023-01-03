@@ -1,4 +1,5 @@
 # Script to preprocess dataset
+# python -m data.preprocess_dataset
 
 import os
 import numpy as np

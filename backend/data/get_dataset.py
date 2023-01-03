@@ -1,69 +1,133 @@
 # Script to download and combine datasets
+# python -m data.get_dataset
 
 import os
 import pandas as pd
-from datasets import load_dataset
+import gdown
+import ast
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'backend.settings')
 from django.conf import settings
 from shared import utility
 
-def download_laion_dataset():
-    if not os.path.isfile(settings.LAION_METADATA_PATH):
-        print('Downloading LAION metadata')
-        utility.download_file(settings.LAION_METADATA_URL, settings.LAION_METADATA_PATH)
 
-    if len([f for f in os.listdir(settings.LAION_DOWNLOAD_DIR) if f.endswith('.parquet') and not settings.LAION_METADATA_PATH.endswith(f)]) == 0:
-        print('Downloading LAION images')
-        df = pd.read_parquet(settings.LAION_METADATA_PATH)
-        df = df.sample(n=settings.NUM_LAION_SAMPLES, random_state=1)
-        df.to_parquet(settings.LAION_TEMP_PATH)
-        os.system(settings.LAION_DOWNLOAD_CMD)
-        os.remove(settings.LAION_TEMP_PATH)
+def find_metadata_paths(dataset_dir):
+    if not os.path.exists(dataset_dir):
+        return []
+    return [dataset_dir + f for f in os.listdir(dataset_dir) if f.startswith('metadata')]
 
 
-def map_image_to_bytes(row):
-    row['image'] = utility.pil_image_to_bytes(row['image'], 'JPEG')
-    return row
+def find_data_paths(dataset_dir):
+    if not os.path.exists(dataset_dir):
+        return []
+    return [dataset_dir + f for f in os.listdir(dataset_dir) if f.endswith('.parquet') and not f.startswith('metadata')]
 
 
-def download_diffusiondb_dataset():
-    print('Downloading DiffusionDB dataset')
-    ds = load_dataset('poloclub/diffusiondb', settings.DIFFUSIONDB_SUBSET, split='train')
+# Read a list of paths to data files and return a single dataframe
+def read_data(paths, target_num=-1):
+    dfs = []
+    num = 0
+    for path in paths:
+        if path.endswith('.parquet'):
+            dfs.append(pd.read_parquet(path))
 
-    print('Resizing DiffusionDB images')
-    ds = ds.map(map_image_to_bytes)
-    df = ds.to_pandas()
-    df.to_parquet(settings.DIFFUSIONDB_DOWNLOAD_PATH)
+        elif path.endswith('.csv'):
+            for chunk in pd.read_csv(path, chunksize=10000):
+                dfs.append(chunk)
+                if target_num != -1:
+                    num += dfs[-1].shape[0]
+                    if num >= target_num:
+                        break
+
+        if target_num != -1:
+            num += dfs[-1].shape[0]
+            if num >= target_num:
+                break
+
+    return pd.concat(dfs).reset_index(drop=True)
 
 
-def preprocess_laion_dataset():
-    print('Preprocessing LAION dataset')
-    dfs = [pd.read_parquet(settings.LAION_DOWNLOAD_DIR + f) for f in os.listdir(settings.LAION_DOWNLOAD_DIR) if f.endswith('.parquet') and not settings.LAION_METADATA_PATH.endswith(f)]
-    df = pd.concat(dfs).reset_index(drop=True)
-    df = df[['jpg']]
-    df.rename(columns={'jpg': 'image'}, inplace=True)
-    df['is_ai_generated'] = False
+def extract_openprompts_url_metadata(x):
+    try:
+        return ast.literal_eval(x)
+    except:
+        return { 'raw_discord_data': { 'image_uri': None } }
+
+
+# Expose url data in metadata df as a top level column so img2dataset can read it
+def format_metadata_df(df, dataset):
+    if dataset == 'laion':
+        df = df.rename(columns={'URL': 'url'})
+
+    elif dataset == 'openprompts':
+        df['raw_data'] = df['raw_data'].apply(lambda x: extract_openprompts_url_metadata(x))
+        df['raw_data'] = df['raw_data'].apply(lambda x: x.get('raw_discord_data').get('image_uri'))
+        df = df.rename(columns={'raw_data': 'url'})
+
     return df
 
 
-def preprocess_diffusiondb_dataset():
-    print('Preprocessing DiffusionDB dataset')
-    df = pd.read_parquet(settings.DIFFUSIONDB_DOWNLOAD_PATH)
-    df = df[['image']]
-    df['is_ai_generated'] = True
+def download_dataset(dataset, force_download_metadata=False, force_download_data=False):
+    DATASET_DIR = settings.DATA_DIR + 'datasets/{}/'.format(dataset)
+    TEMP_METADATA_PATH = DATASET_DIR + 'metadata-temp.parquet'
+
+    metadata_paths = find_metadata_paths(DATASET_DIR)
+    if force_download_metadata:
+        for path in metadata_paths:
+            os.remove(path)
+
+    if len(metadata_paths) == 0:
+        print('Downloading {} metadata'.format(dataset))
+        for i in range(len(settings.DATASETS[dataset]['metadata'])):
+            if settings.DATASETS[dataset]['metadata_src'] == 'url':
+                metadata_path = DATASET_DIR + 'metadata-{}.parquet'.format(i)
+                utility.download_file(settings.DATASETS[dataset]['metadata'][i], metadata_path)
+
+            elif settings.DATASETS[dataset]['metadata_src'] == 'gdrive':
+                metadata_path = DATASET_DIR + 'metadata-{}.{}'.format(i, settings.DATASETS[dataset]['metadata_type'])
+                utility.create_path(metadata_path, is_file_path=True)
+                gdown.download(settings.DATASETS[dataset]['metadata'][i], metadata_path, quiet=False)
+    
+    else:
+        print('Found existing {} metadata'.format(dataset))
+
+    metadata_paths = find_metadata_paths(DATASET_DIR)
+    data_paths = find_data_paths(DATASET_DIR)
+    if force_download_data:
+        for path in data_paths:
+            os.remove(path)
+
+    if len(data_paths) == 0:
+        print('Downloading {} images'.format(dataset))
+        df = None
+        df = read_data(metadata_paths, settings.DATASETS[dataset]['samples'] * 10)
+        df = df.sample(n=settings.DATASETS[dataset]['samples'], random_state=1)
+        df = format_metadata_df(df, dataset)
+
+        # Temporarily save df so img2dataset can read it
+        df.to_parquet(TEMP_METADATA_PATH)
+        os.system('img2dataset --url_list {} --input_format "parquet" --output_folder {} --output_format parquet --processes_count 16 --thread_count 64 --image_size {} --encode_format webp --resize_mode="keep_ratio" --skip_reencode=True --url_col "url" --disallowed_header_directives "[]"'.format(TEMP_METADATA_PATH, DATASET_DIR, settings.DOWNLOAD_IMAGE_LEN))
+        os.remove(TEMP_METADATA_PATH)
+
+    else:
+        print('Found existing {} images'.format(dataset))
+
+    data_paths = find_data_paths(DATASET_DIR)
+
+    print('Preprocessing {} dataset'.format(dataset))
+    df = read_data(data_paths)
+    df = df[['webp']]
+    df.rename(columns={'webp': 'image'}, inplace=True)
+    df['is_ai_generated'] = settings.DATASETS[dataset]['is_ai_generated']
+
     return df
 
 
 def main():
     print('Downloading datasets')
-    download_laion_dataset()
-    download_diffusiondb_dataset()
-
-    print('\nPreprocessing datasets')
     dfs = []
-    dfs.append(preprocess_laion_dataset())
-    dfs.append(preprocess_diffusiondb_dataset())
+    for dataset in settings.DATASETS.keys():
+        dfs.append(download_dataset(dataset))
 
     print('\nCombining datasets')
     df = pd.concat(dfs).reset_index(drop=True)
