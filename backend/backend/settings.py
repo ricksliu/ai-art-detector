@@ -136,7 +136,7 @@ CORS_ALLOWED_ORIGINS = [
 
 
 # Program settings (can customize)
-MODEL_VER = '20230103-004413'  # ML model used by api
+MODEL_VER = '20230104-033330'  # ML model used by api
 DOWNLOAD_IMAGE_LEN = 200  # Min width and height of images when downloading
 IMAGE_LEN = 100  # Width and height of images when training
 DATASETS = {  # Datasets used to construct combined dataset
