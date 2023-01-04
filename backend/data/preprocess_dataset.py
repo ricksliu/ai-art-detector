@@ -13,9 +13,10 @@ from shared import utility
 
 
 def main():
+    print('Loading dataset')
     df = pd.read_parquet(settings.DATASET_PATH)
 
-    print('Removing invalid data')
+    print('\nRemoving invalid data')
     df.dropna(inplace=True)
     df.reset_index(drop=True, inplace=True)
 

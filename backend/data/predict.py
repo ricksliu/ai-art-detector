@@ -15,5 +15,5 @@ model = keras.models.load_model(settings.MODELS_DIR + settings.MODEL_VER, compil
 def predict_is_ai_generated(image):
     image = utility.resize_pil_image(image.convert('RGB'), settings.IMAGE_LEN)
     image = np.divide(np.asarray(image), 255)
-    prediction = model.predict(np.asarray([image]))
-    return float(prediction[0][0])
+    predictions = model.predict(np.asarray([image]))
+    return float(predictions[0][0])
