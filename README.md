@@ -24,7 +24,7 @@ A larger dataset could reduce overfitting and cover other popular text-to-image 
 
 ## Results
 
-The model performs reasonably well with precision and recall in the mid 80s. The training suffers from overfitting, which could be reduced with a larger dataset and further tuning. Overall, the project shows that it is possible to detect AI-generated artwork using AI.
+The model performs reasonably well with both precision and recall in the mid 80s. The training suffers from overfitting, most likely caused by the small dataset and a lack of tuning. Nevertheless, the project demonstrates that detecting AI-generated artwork using AI is viable.
 
 ![Image of the result page.](doc/model-results.png)
 
@@ -84,7 +84,7 @@ The backend should now be live at http://localhost:8000.
 
 ## Model
 
-The repo includes a pretrained model so training a new model is not necessary start the project. To train a new model:
+The repo includes a pretrained model so training a new model is not necessary run the project. To train a new model:
 
 Navigate to the source directory:
 ```
