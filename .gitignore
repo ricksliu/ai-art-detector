@@ -1,13 +1,13 @@
 # Compiled output
-frontend/dist
-frontend/tmp
-frontend/out-tsc
-frontend/bazel-out
+src/frontend/dist
+src/frontend/tmp
+src/frontend/out-tsc
+src/frontend/bazel-out
 
 # Node
-frontend/node_modules
-frontend/npm-debug.log
-frontend/yarn-error.log
+src/frontend/node_modules
+src/frontend/npm-debug.log
+src/frontend/yarn-error.log
 
 # IDEs and editors
 **/.idea/
@@ -27,23 +27,23 @@ frontend/yarn-error.log
 **/.history/*
 
 # Miscellaneous
-frontend/.angular/cache
-frontend/.sass-cache/
-frontend/connect.lock
-frontend/coverage
-frontend/libpeerconnection.log
-frontend/testem.log
-frontend/typings
+src/frontend/.angular/cache
+src/frontend/.sass-cache/
+src/frontend/connect.lock
+src/frontend/coverage
+src/frontend/libpeerconnection.log
+src/frontend/testem.log
+src/frontend/typings
 
 # System files
 **/.DS_Store
 **/Thumbs.db
 
 # Other
+!**/.gitkeep
 **/__pycache__
 **/venv
-backend/db.sqlite3
-backend/.env
-data/**/*.*
-!**/.gitkeep
-!data/models/**/*.*
+src/backend/db.sqlite3
+src/backend/.env
+src/data/**/*.*
+!src/data/models/**/*.*
