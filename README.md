@@ -6,11 +6,11 @@ Website that detects if artwork is AI-generated. Uses Angular, Django and Keras.
 
 AI Art Detector is a single-page web app that lets users upload images and determines if they are AI-generated using a CNN binary image classifier.
 
-The frontend uses Angular and the backend uses Django, Keras and SQLite.
+The frontend uses Angular, and the backend uses Django, Keras and SQLite.
 
-![Image of the home page.](doc/home-page.png)
+![Image of the frontend home page.](doc/home-page.png)
 
-![Image of the result page.](doc/result-page.png)
+![Image of the frontend result page.](doc/result-page.png)
 
 ## Data
 
@@ -26,7 +26,7 @@ A larger dataset could reduce overfitting and cover other popular text-to-image 
 
 The model performs reasonably well with both precision and recall in the mid 80s. The training suffers from overfitting, most likely caused by the small dataset and a lack of tuning. Nevertheless, the project demonstrates that detecting AI-generated artwork using AI is viable.
 
-![Image of the result page.](doc/model-results.png)
+![Image of the model results.](doc/model-results.png)
 
 # Setup
 
