@@ -1,0 +1,108 @@
+/* Global styles */
+
+// Global variables
+:root {
+  --spacing: 1rem;
+
+  --title-size: 3rem;
+  --font-size: 2rem;
+  --caption-size: 1.5rem;
+  --border-size: 0.25rem;
+  --border-radius: 0.5rem;
+
+  --font-colour: #000;
+  --font-colour-light: #fff;
+  --border-colour: #aaa;
+  --emphasis-colour-dark: #44f;
+  --emphasis-colour: #66f;
+  --emphasis-colour-light: #88f;
+  --error-colour: #f77;
+  --background-colour-dark: #eee;
+  --background-colour: #fff;
+
+  --font: Nunito, Verdana, sans-serif;
+}
+
+// Fonts
+@font-face {
+  font-family: 'Nunito';
+  src: url('assets/fonts/Nunito-Regular.ttf');
+}
+@font-face {
+  font-family: 'Nunito';
+  src: url('assets/fonts/Nunito-SemiBold.ttf');
+  font-weight: bold;
+}
+@font-face {
+  font-family: 'Nunito';
+  src: url('assets/fonts/Nunito-Italic.ttf');
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Nunito';
+  src: url('assets/fonts/Nunito-SemiBoldItalic.ttf');
+  font-weight: bold;
+  font-style: italic;
+}
+
+// Breakpoints
+$breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1400px
+);
+
+@mixin respond-above($name) {
+  @each $label, $size in $breakpoints {
+    @if $name == $label {
+      @media (min-width: $size) {
+        @content;
+      }
+    }
+  }
+}
+
+@mixin respond-below($name) {
+  @each $label, $size in $breakpoints {
+    @if $name == $label {
+      @media not all and (min-width: $size) {
+        @content;
+      }
+    }
+  }
+}
+
+// Animations
+@keyframes fadein {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes fadeout {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+// index.html styling
+html {
+  width: 100%;
+  height: 100%;
+  color: var(--font-colour);
+  font-size: medium;
+
+  @include respond-below(sm) {
+    font-size: x-small;
+  }
+}
+
+html, html * {
+  font-family: var(--font);
+}
+
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}

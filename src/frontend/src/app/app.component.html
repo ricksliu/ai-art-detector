@@ -1,0 +1,33 @@
+<div class="header">
+  <div class="header-text">AI Art Detector</div>
+  <div class="github-button">
+    <a href="https://github.com/ricksliu/ai-art-detector" target="_blank">
+      <img src="../assets/github-mark-white.png" />
+    </a>
+  </div>
+</div>
+
+<div *ngIf="showNav()" class="nav">
+  <button
+    class="nav-back"
+    type="button"
+    (click)="onNavBack()"
+  >Back</button>
+  <div class="nav-spacer"></div>
+</div>
+
+<div class="content">
+  <router-outlet></router-outlet>
+</div>
+
+<div class="errors">
+  <ng-container *ngFor="let error of errors(); let i = index;">
+    <app-toast
+      [type]="'error'"
+      [message]="error"
+      (closeEvent)="onCloseError(i)"
+    ></app-toast>
+  </ng-container>
+</div>
+
+<app-loader [show]="showLoader()"></app-loader>

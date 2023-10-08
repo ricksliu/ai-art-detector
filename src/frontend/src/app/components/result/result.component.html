@@ -1,0 +1,15 @@
+<div class="result-container">
+  <div class="result-image-container">
+    <img class="result-image" src="{{imageRequest()?.image}}" alt="Uploaded art.">
+  </div>
+
+  <ng-container *ngIf="imageResponse()?.model_is_ai_generated">
+    <div class="result-text">We think this art <span class="emphasis">is AI generated</span> with</div>
+  </ng-container>
+  <ng-container *ngIf="!imageResponse()?.model_is_ai_generated">
+    <div class="result-text">We think this art <span class="emphasis">is not AI generated</span> with</div>
+  </ng-container>
+
+  <div class="confidence-text">{{confidence()}}%</div>
+  <div class="result-text">confidence.</div>
+</div>

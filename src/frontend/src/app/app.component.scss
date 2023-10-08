@@ -1,0 +1,89 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  padding: var(--spacing);
+  background-color: var(--emphasis-colour);
+}
+
+.header-text {
+  flex: 1 1 auto;
+  display: inline-block;
+  font-size: var(--title-size);
+  line-height: var(--title-size);
+  text-align: center;
+  font-weight: bold;
+  color: var(--font-colour-light);
+  margin-right: calc(var(--title-size) / -1);
+}
+
+.github-button {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--title-size);
+  height: var(--title-size);
+
+  a {
+    height: calc(var(--title-size) / 2);
+  }
+
+  img {
+    width: calc(var(--title-size) / 2);
+    height: calc(var(--title-size) / 2);
+  }
+}
+
+.nav {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+
+  .nav-back {
+    flex: 0 0 auto;
+    padding: calc(var(--spacing) / 2) var(--spacing);
+    background-color: var(--background-colour);
+    border-style: none;
+    font-size: var(--caption-size);
+    line-height: var(--caption-size);
+    cursor: pointer;
+
+    &:before {
+      content: "\003c";
+      font-size: calc(var(--caption-size) * 1.25);
+      line-height: var(--caption-size);
+      vertical-align: baseline;
+      margin-right: calc(var(--spacing) / 2);
+    }
+
+    &:hover {
+      background-color: var(--background-colour-dark);
+    }
+
+    &:active {
+      background-color: var(--background-colour);
+    }
+  }
+
+  .nav-spacer {
+    flex: 1 1 0;
+  }
+}
+
+.content {
+  flex: 1 1 0;
+}
+
+.errors {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}

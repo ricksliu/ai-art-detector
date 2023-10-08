@@ -1,0 +1,15 @@
+<input
+  #fileInputHidden
+  class="file-input-hidden"
+  type="file"
+  accept="{{accept}}"
+  (change)="onSubmit($event)"
+>
+<div
+  class="file-input"
+  (click)="fileInputHidden.click()"
+  (drop)="onDrop($event)"
+  (dragover)="onDragover($event)"
+>
+  <div class="file-input-label">{{label}}</div>
+</div>

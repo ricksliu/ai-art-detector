@@ -1,0 +1,39 @@
+:host {
+  display: flex;
+  align-items: center;
+  margin: calc(var(--spacing) / 4);
+  border-radius: var(--border-radius);
+  background-color: var(--emphasis-colour-light);
+  overflow: hidden;
+  animation: fadein 0.25s;
+
+  &.error {
+    background-color: var(--error-colour);
+  }
+}
+
+.toast-message {
+  flex: 1 1 0;
+  padding: 0 calc(var(--spacing) / 2);
+  font-size: var(--caption-size);
+  line-height: var(--caption-size);
+  color: var(--font-colour-light);
+}
+
+.toast-close {
+  flex: 0 0 calc(var(--caption-size) + var(--spacing));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: calc(var(--caption-size) + var(--spacing));
+  padding: 0;
+  background-color: #fff0;
+  border-style: none;
+  cursor: pointer;
+
+  &:after {
+    content: "\00d7";
+    font-size: calc(var(--caption-size));
+    color: var(--font-colour-light);
+  }
+}

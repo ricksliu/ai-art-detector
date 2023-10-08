@@ -1,0 +1,71 @@
+###########
+# BUILDER #
+###########
+
+# Pull base image
+FROM python:3.11.2 as builder
+
+# Set environment variables
+ENV APP_HOME=/app
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+# Set working directory
+WORKDIR $APP_HOME
+
+# Install system dependencies
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends gcc
+
+# Lint project
+# RUN pip install --upgrade pip
+# RUN pip install flake8==6.0.0
+# COPY . .
+# RUN flake8 --ignore=E501,F401 --exclude venv .
+
+# Install Python dependencies
+COPY ./requirements.txt .
+RUN pip wheel --no-cache-dir --no-deps --wheel-dir ./wheels -r ./requirements.txt
+
+###########
+# FINAL #
+###########
+
+# Pull base image
+FROM python:3.11.2
+
+# Create app user
+RUN addgroup --system app && adduser --system --group app
+
+# Set environment variables
+ENV APP_HOME=/app
+
+# Set working directory
+WORKDIR $APP_HOME
+
+# Create directories
+RUN mkdir ./staticfiles
+
+# Install Python dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends netcat
+COPY --from=builder $APP_HOME/wheels ./wheels
+COPY --from=builder $APP_HOME/requirements.txt .
+RUN pip install --upgrade pip
+RUN pip install --no-cache ./wheels/*
+
+# Copy entrypoint
+COPY ./entrypoint.prod.sh .
+RUN sed -i 's/\r$//g' ./entrypoint.prod.sh
+RUN chmod +x ./entrypoint.prod.sh
+
+# Copy project
+COPY . .
+
+# Change owner of all files to app user
+RUN chown -R app:app .
+
+# Change to app user
+USER app
+
+# Run entrypoint
+ENTRYPOINT ["./entrypoint.prod.sh"]

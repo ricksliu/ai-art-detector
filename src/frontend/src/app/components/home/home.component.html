@@ -1,0 +1,15 @@
+<div class="home-container">
+  <app-text-input
+    [placeholder]="'enter image url'"
+    [submitLabel]="'submit'"
+    (inputEvent)="onUrl($event)"
+  ></app-text-input>
+
+  <div class="or-label">or</div>
+  
+  <app-file-input
+    [accept]="'image/*'"
+    [label]="'drag and drop image or click to browse'"
+    (inputEvent)="onFiles($event)"
+  ></app-file-input>
+</div>

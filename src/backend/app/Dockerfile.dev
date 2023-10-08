@@ -1,0 +1,26 @@
+# Pull base image
+FROM python:3.11.2
+
+# Set environment variables
+ENV APP_HOME=/app
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+# Set working directory
+WORKDIR $APP_HOME
+
+# Install Python dependencies
+RUN pip install --upgrade pip
+COPY ./requirements.txt .
+RUN pip install -r ./requirements.txt --no-cache-dir
+
+# Copy entrypoint
+COPY ./entrypoint.dev.sh .
+RUN sed -i 's/\r$//g' ./entrypoint.dev.sh
+RUN chmod +x ./entrypoint.dev.sh
+
+# Copy project
+COPY . .
+
+# Run entrypoint
+ENTRYPOINT ["./entrypoint.dev.sh"]

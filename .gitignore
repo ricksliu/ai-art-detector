@@ -1,0 +1,49 @@
+# Compiled output
+src/frontend/dist
+src/frontend/tmp
+src/frontend/out-tsc
+src/frontend/bazel-out
+
+# Node
+src/frontend/node_modules
+src/frontend/npm-debug.log
+src/frontend/yarn-error.log
+
+# IDEs and editors
+**/.idea/
+**/.project
+**/.classpath
+**/.c9/
+**/*.launch
+**/.settings/
+**/*.sublime-workspace
+
+# Visual Studio Code
+**/.vscode/*
+!**/.vscode/settings.json
+!**/.vscode/tasks.json
+!**/.vscode/launch.json
+!**/.vscode/extensions.json
+**/.history/*
+
+# Miscellaneous
+src/frontend/.angular/cache
+src/frontend/.sass-cache/
+src/frontend/connect.lock
+src/frontend/coverage
+src/frontend/libpeerconnection.log
+src/frontend/testem.log
+src/frontend/typings
+
+# System files
+**/.DS_Store
+**/Thumbs.db
+
+# Other
+!**/.gitkeep
+**/__pycache__
+**/venv
+src/backend/db.sqlite3
+src/backend/.env.dev
+src/backend/.env.prod
+src/data/**/*.*
