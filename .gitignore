@@ -39,11 +39,13 @@ src/frontend/typings
 **/.DS_Store
 **/Thumbs.db
 
-# Other
-!**/.gitkeep
+# Backend
 **/__pycache__
 **/venv
+src/backend/**/.env.*
+!src/backend/**/.env.*.sample
 src/backend/db.sqlite3
-src/backend/.env.dev
-src/backend/.env.prod
 src/data/**/*.*
+
+# Misc
+!**/.gitkeep
