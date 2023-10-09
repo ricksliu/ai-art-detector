@@ -3,7 +3,7 @@
 ###########
 
 # Pull base image
-FROM python:3.11.2 as builder
+FROM python:3.11.2-slim as builder
 
 # Set environment variables
 ENV APP_HOME=/app
@@ -13,26 +13,21 @@ ENV PYTHONUNBUFFERED 1
 # Set working directory
 WORKDIR $APP_HOME
 
-# Install system dependencies
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends postgresql gcc python3-dev musl-dev
-
-# Install Python dependencies
-COPY ./requirements.txt .
-RUN pip wheel --no-cache-dir --no-deps --wheel-dir ./wheels -r ./requirements.txt
+# Activate Python venv and install dependencies
+COPY requirements.docker.txt .
+RUN python -m venv venv \
+    && venv/bin/pip install -r requirements.docker.txt --no-cache-dir
 
 ###########
-# FINAL #
+# RUNNER #
 ###########
 
 # Pull base image
-FROM python:3.11.2
-
-# Create app user
-RUN addgroup --system app && adduser --system --group app
+FROM python:3.11.2-slim
 
 # Set environment variables
 ENV APP_HOME=/app
+ENV PATH="venv/bin:$PATH"
 
 # Set working directory
 WORKDIR $APP_HOME
@@ -40,26 +35,20 @@ WORKDIR $APP_HOME
 # Create directories
 RUN mkdir ./static
 
+# Create app user
+RUN addgroup --system app && adduser --system --group app
+
 # Install system dependencies
 RUN apt-get update \
-    && apt-get install -y netcat-traditional
-
-# Install Python dependencies
-COPY --from=builder $APP_HOME/wheels ./wheels
-COPY --from=builder $APP_HOME/requirements.txt .
-RUN pip install --upgrade pip \
-    && pip install --no-cache ./wheels/*
+    && apt-get install -y --no-install-recommends netcat-traditional
 
 # Copy entrypoint
-COPY ./entrypoint.prod.sh .
-RUN sed -i 's/\r$//g' ./entrypoint.prod.sh \
-    && chmod +x ./entrypoint.prod.sh
+COPY entrypoint.prod.sh .
+RUN sed -i 's/\r$//g' entrypoint.prod.sh \
+    && chmod +x entrypoint.prod.sh
 
-# Copy project
-COPY . .
-
-# Change owner of all files to app user
-RUN chown -R app:app .
+# Copy project and change owner to app user
+COPY --from=builder --chown=app:app --chmod=700 /app .
 
 # Change to app user
 USER app

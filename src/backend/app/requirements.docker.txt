@@ -1,0 +1,15 @@
+--find-links https://download.pytorch.org/whl/torch_stable.html
+
+Django==4.2.6
+django-cors-headers==4.2.0
+djangorestframework==3.14.0
+gunicorn==21.2.0
+img2dataset==1.42.0
+matplotlib==3.8.0
+numpy==1.26.0
+pandas==1.5.3
+Pillow==10.0.1
+psycopg2-binary==2.9.6
+Requests==2.31.0
+torch==2.0.1+cpu
+tqdm==4.66.1

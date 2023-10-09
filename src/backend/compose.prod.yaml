@@ -33,6 +33,7 @@ services:
     depends_on:
       - app
   acme-companion:
+    container_name: acme-companion
     image: nginxproxy/acme-companion
     volumes:
       - acme:/etc/acme.sh

@@ -64,7 +64,7 @@ The frontend should now be live at http://localhost:4200.
 
 Navigate to the source directory:
 ```
-cd src/backend
+cd src/backend/app
 ```
 
 It is recommended to set up a virtual Python environment.
@@ -85,8 +85,6 @@ python manage.py makemigrations
 python manage.py migrate
 ```
 
-Make a copy of `src/backend/.env.sample` and rename it to `.env`. Add the required secrets to the file.
-
 To start the backend:
 ```
 python manage.py runserver
@@ -98,7 +96,7 @@ The backend should now be live at http://localhost:8000.
 
 Navigate to the source directory:
 ```
-cd src/backend
+cd src/backend/app
 ```
 
 To download the dataset:
@@ -122,7 +120,7 @@ python -m data.scripts.train
 
 To use the new model with the backend, update the `MODEL_VER` setting in `src/backend/app/settings.py` with the name of the new model.
 
-## Local Docker Setup
+## Docker Commands
 
 Navigate to the source directory:
 ```
@@ -131,7 +129,7 @@ cd src/backend
 
 To build the images:
 ```
-docker-compose -f compose.dev.yaml build
+docker-compose -f compose.dev.yaml build  # Or compose.staging.yaml, compose.prod.yaml
 ```
 
 To run the containers:
@@ -156,7 +154,12 @@ docker-compose -f compose.dev.yaml down
 The `-v` option stops all volumes as well.
 
 
-## AWS
+## AWS Commands
+
+Navigate to the source directory:
+```
+cd src/backend
+```
 
 To SSH into the EC2 instance:
 ```
@@ -165,6 +168,6 @@ ssh -i <pem-certificate> ec2-user@<server-elastic-ip>
 
 To login to the ECR repository and push the Docker images:
 ```
-aws ecr get-login-password --region <aws-region> | docker login --username AWS --password-stdin <aws-account-id>.dkr.ecr.<aws-region>.amazonaws.com
+aws ecr get-login-password --region ca-central-1 | docker login --username AWS --password-stdin 310294657566.dkr.ecr.ca-central-1.amazonaws.com
 docker-compose -f compose.staging.yaml push  # Or compose.prod.yaml
 ```

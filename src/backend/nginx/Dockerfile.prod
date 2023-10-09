@@ -7,5 +7,5 @@ ENV APP_HOME=/etc/nginx
 WORKDIR $APP_HOME
 
 # Copy files
-COPY ./vhost.d/default ./vhost.d/default
-COPY ./custom.conf ./conf.d/custom.conf
+COPY vhost.d/default vhost.d/default
+COPY custom.conf conf.d/custom.conf
