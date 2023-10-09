@@ -144,8 +144,27 @@ To check the logs:
 docker-compose -f compose.dev.yaml logs -f
 ```
 
+To bash into a running container:
+```
+docker exec -it <container> bash
+```
+
 To stop the containers:
 ```
 docker-compose -f compose.dev.yaml down
 ```
 The `-v` option stops all volumes as well.
+
+
+## AWS
+
+To SSH into the EC2 instance:
+```
+ssh -i <pem-certificate> ec2-user@<server-elastic-ip>
+```
+
+To login to the ECR repository and push the Docker images:
+```
+aws ecr get-login-password --region <aws-region> | docker login --username AWS --password-stdin <aws-account-id>.dkr.ecr.<aws-region>.amazonaws.com
+docker-compose -f compose.staging.yaml push  # Or compose.prod.yaml
+```

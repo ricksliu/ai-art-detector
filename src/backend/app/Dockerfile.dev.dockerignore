@@ -1,0 +1,4 @@
+venv
+Dockerfile.prod
+Dockerfile.prod.dockerignore
+entrypoint.prod.sh

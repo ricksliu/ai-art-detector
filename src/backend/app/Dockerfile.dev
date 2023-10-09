@@ -9,6 +9,10 @@ ENV PYTHONUNBUFFERED 1
 # Set working directory
 WORKDIR $APP_HOME
 
+# Install system dependencies
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends netcat-traditional postgresql gcc python3-dev musl-dev
+
 # Install Python dependencies
 RUN pip install --upgrade pip
 COPY ./requirements.txt .
@@ -16,8 +20,8 @@ RUN pip install -r ./requirements.txt --no-cache-dir
 
 # Copy entrypoint
 COPY ./entrypoint.dev.sh .
-RUN sed -i 's/\r$//g' ./entrypoint.dev.sh
-RUN chmod +x ./entrypoint.dev.sh
+RUN sed -i 's/\r$//g' ./entrypoint.dev.sh \
+    && chmod +x ./entrypoint.dev.sh
 
 # Copy project
 COPY . .
