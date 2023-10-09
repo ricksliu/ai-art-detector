@@ -1,11 +1,5 @@
 FROM nginxproxy/nginx-proxy
 
-# Set environment variables
-ENV APP_HOME=/etc/nginx
-
-# Set working directory
-WORKDIR $APP_HOME
-
 # Copy files
-COPY vhost.d/default vhost.d/default
-COPY custom.conf conf.d/custom.conf
+COPY vhost.d/default /etc/nginx/vhost.d/default
+COPY custom.conf /etc/nginx/conf.d/custom.conf

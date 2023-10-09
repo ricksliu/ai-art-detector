@@ -161,13 +161,29 @@ Navigate to the source directory:
 cd src/backend
 ```
 
+To copy local files over to the EC2 instance:
+```
+scp -i <path-to-pem-cert> <src-file-on-local> ec2-user@15.156.44.97:<dest-path-on-ec2>
+```
+The `-r` option copies directories.
+
 To SSH into the EC2 instance:
 ```
-ssh -i <pem-certificate> ec2-user@<server-elastic-ip>
+ssh -i <path-to-pem-cert> ec2-user@15.156.44.97
 ```
 
-To login to the ECR repository and push the Docker images:
+To login to the ECR repository:
 ```
 aws ecr get-login-password --region ca-central-1 | docker login --username AWS --password-stdin 310294657566.dkr.ecr.ca-central-1.amazonaws.com
+```
+
+To push the Docker images to the ECR repository:
+```
 docker-compose -f compose.staging.yaml push  # Or compose.prod.yaml
+```
+
+To pull the Docker images from the ECR repository:
+```
+docker pull 310294657566.dkr.ecr.ca-central-1.amazonaws.com/ai-art-detector:app
+docker pull 310294657566.dkr.ecr.ca-central-1.amazonaws.com/ai-art-detector:nginx-proxy
 ```
