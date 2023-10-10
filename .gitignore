@@ -40,12 +40,15 @@ src/frontend/typings
 **/Thumbs.db
 
 # Backend
-**/__pycache__
-**/venv
-src/backend/**/.env.*
-!src/backend/**/.env.*.sample
+src/backend/**/__pycache__
+src/backend/**/venv
 src/backend/*.sqlite3
 src/data/**/*.*
 
+# Jenkins
+src/jenkins/jenkins_home/**
+
 # Misc
 !**/.gitkeep
+**/.env.*
+**/.env.*.sample

@@ -53,7 +53,7 @@ RUN sed -i 's/\r$//g' entrypoint.prod.sh \
 # Copy project and change owner to app user
 COPY --chown=app:app --chmod=700 . .
 
-# Change to app user
+# Switch to app user
 USER app
 
 # Run entrypoint

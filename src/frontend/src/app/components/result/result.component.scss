@@ -23,7 +23,7 @@
   flex: 1 1 0;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;  // Fix for iOS Safari
   overflow: hidden;
 
   .result-image {

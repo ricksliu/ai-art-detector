@@ -1,0 +1,37 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                dir('src/frontend') {
+                    bat 'npm install'
+                }
+            }
+        }
+
+        stage('Build') {
+            steps {
+                dir('src/frontend') {
+                    bat 'npm run ng -- build --configuration production'
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                dir('src/frontend') {
+                    withAWS(credentials:'AWS') {
+                        s3Upload(file:'dist/frontend', bucket:'s3://ai-art-detector.ricksliu.dev')
+                    }                    
+                }
+            }
+        }
+    }
+}

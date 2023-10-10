@@ -144,35 +144,9 @@ python -m data.scripts.train
 
 To use the new model with the backend, update the `MODEL_VER` setting in `src/backend/app/settings.py` with the name of the new model.
 
-## Local Jenkins Setup
-
-Navigate to the directory:
-```
-cd src/jenkins
-```
-
-Build and start the Docker image:
-```
-docker-compose build
-docker-compose up -d
-```
-
-Build and start the Docker image:
-```
-docker-compose build
-docker-compose up -d
-```
-
-View the logs to find the initial admin password.
-```
-docker-compose logs
-```
-
-Head to `localhost:8080` to finish the setup.
-
 # Deployment
 
-## Frontend Deployment
+## Manual Frontend Deployment
 
 Navigate to the directory:
 ```
@@ -189,7 +163,7 @@ Deploy the build to S3:
 aws s3 sync dist/frontend s3://ai-art-detector.ricksliu.dev
 ```
 
-## Backend Deployment
+## Manual Backend Deployment
 
 Navigate to the directory:
 ```
