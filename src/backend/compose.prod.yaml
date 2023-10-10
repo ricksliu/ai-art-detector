@@ -7,7 +7,7 @@ services:
       context: ./app
       dockerfile: Dockerfile.prod
     image: 310294657566.dkr.ecr.ca-central-1.amazonaws.com/ai-art-detector:app
-    command: gunicorn app.app.wsgi:application --bind 0.0.0.0:8000
+    command: gunicorn app.wsgi:application --bind 0.0.0.0:8000
     volumes:
       - static:/app/static
     expose:

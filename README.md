@@ -53,6 +53,13 @@ Detecting AI-generated artwork using AI is probably feasible to do, but this pro
 
 # Setup
 
+## Prerequisites
+
+- Node.js
+- Python
+- Docker
+- AWS CLI
+
 ## Local Frontend Setup
 
 Install the Angular CLI npm package globally:
