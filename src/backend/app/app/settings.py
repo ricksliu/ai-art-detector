@@ -28,7 +28,7 @@ DEBUG = bool(os.environ.get('DEBUG', 1))
 
 # HTTPS/SSL configuration
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-CSRF_TRUSTED_ORIGINS = os.environ.get('CSRF_TRUSTED_ORIGINS', '').split(' ')
+CSRF_TRUSTED_ORIGINS = os.environ.get('CSRF_TRUSTED_ORIGINS', 'http://localhost:8000').split(' ')
 
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost 127.0.0.1 [::1]').split(' ')
 CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', 'http://localhost:4200').split(' ')
@@ -170,9 +170,9 @@ DATASETS = {  # Datasets used to construct combined dataset
 
 # Program constants (do not need to customize)
 
-DATA_DIR = '../../data/'
+DATA_DIR = str(BASE_DIR / '../../data') + '/'
 DATASET_PATH = DATA_DIR + 'dataset.parquet'
 TRAIN_SET_PATH = DATA_DIR + 'train-set.csv'
 TEST_SET_PATH = DATA_DIR + 'test-set.csv'
-MODELS_DIR = './data/ml/'
+MODELS_DIR = str(BASE_DIR / 'data/ml') + '/'
 MODEL_NAME = 'model.zip'

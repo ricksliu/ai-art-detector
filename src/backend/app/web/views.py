@@ -25,8 +25,8 @@ class WebImageList(APIView):
             'model_prediction': prediction,
         }
         serializer = WebImageSerializer(data=request.data, context=context)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         if serializer.is_valid():
             serializer.save(**context)  # Save instance with context
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
