@@ -44,7 +44,7 @@ src/frontend/typings
 **/venv
 src/backend/**/.env.*
 !src/backend/**/.env.*.sample
-src/backend/db.sqlite3
+src/backend/*.sqlite3
 src/data/**/*.*
 
 # Misc

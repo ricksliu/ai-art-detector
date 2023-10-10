@@ -28,13 +28,10 @@ DEBUG = bool(os.environ.get('DEBUG', 1))
 
 # HTTPS/SSL configuration
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-CSRF_TRUSTED_ORIGINS = os.environ.get('CSRF_TRUSTED_ORIGINS').split(' ')
+CSRF_TRUSTED_ORIGINS = os.environ.get('CSRF_TRUSTED_ORIGINS', '').split(' ')
 
-ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost 127.0.0.1 [::1]').split(' ')
-
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:4200",
-]
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost 127.0.0.1 [::1]').split(' ')
+CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', 'http://localhost:4200').split(' ')
 
 
 # Application definition
@@ -90,11 +87,11 @@ WSGI_APPLICATION = 'app.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': os.environ.get('SQL_ENGINE', 'django.db.backends.sqlite3'),
-        'NAME': os.environ.get('SQL_DATABASE', BASE_DIR / '../db.sqlite3'),
+        'NAME': os.environ.get('SQL_DATABASE', BASE_DIR / '../db_dev.sqlite3'),
         'USER': os.environ.get('SQL_USER', 'db_user'),
         'PASSWORD': os.environ.get('SQL_PASSWORD', 'db_password'),
         'HOST': os.environ.get('SQL_HOST', 'localhost'),
-        'PORT': os.environ.get('SQL_PORT', '5432'),
+        'PORT': os.environ.get('SQL_PORT', '1234'),
     }
 }
 
