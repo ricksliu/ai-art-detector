@@ -217,11 +217,6 @@ Stop the containers:
 docker-compose -f compose.prod.yaml down -v
 ```
 
-Build the Docker images:
-```
-docker-compose -f compose.prod.yaml build
-```
-
 Start the containers:
 ```
 docker-compose -f compose.prod.yaml up -d

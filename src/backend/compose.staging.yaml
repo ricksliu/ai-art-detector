@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  app:
+    container_name: app
+    build:
+      context: ./app
+      dockerfile: Dockerfile.prod
+    image: 310294657566.dkr.ecr.ca-central-1.amazonaws.com/ai-art-detector:app
+    command: gunicorn app.wsgi:application --chdir app --bind 0.0.0.0:8000
+    volumes:
+      - static:/app/static
+    expose:
+      - 8000
+    env_file:
+      - ./env/.env.staging
+    restart: always
+  nginx-proxy:
+    container_name: nginx-proxy
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile.prod
+    image: 310294657566.dkr.ecr.ca-central-1.amazonaws.com/ai-art-detector:nginx-proxy
+    volumes:
+      - static:/app/static
+      - certs:/etc/nginx/certs
+      - html:/usr/share/nginx/html
+      - vhost:/etc/nginx/vhost.d
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    ports:
+      - 443:443
+      - 80:80
+    depends_on:
+      - app
+    restart: always
+  acme-companion:
+    container_name: acme-companion
+    image: nginxproxy/acme-companion
+    volumes:
+      - acme:/etc/acme.sh
+      - certs:/etc/nginx/certs
+      - html:/usr/share/nginx/html
+      - vhost:/etc/nginx/vhost.d
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    env_file:
+      - ./env/.env.staging.proxy-companion
+    depends_on:
+      - nginx-proxy
+    restart: always
+
+volumes:
+  postgres_db:
+  static:
+  certs:
+  html:
+  vhost:
+  acme:
