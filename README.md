@@ -116,7 +116,7 @@ python manage.py runserver
 
 The backend should now be live at http://localhost:8000.
 
-## Training the Model
+## ML Model Training
 
 Navigate to the directory:
 ```
@@ -143,6 +143,32 @@ python -m data.scripts.train
 ```
 
 To use the new model with the backend, update the `MODEL_VER` setting in `src/backend/app/settings.py` with the name of the new model.
+
+## Local Jenkins Setup
+
+Navigate to the directory:
+```
+cd src/jenkins
+```
+
+Build and start the Docker image:
+```
+docker-compose build
+docker-compose up -d
+```
+
+Build and start the Docker image:
+```
+docker-compose build
+docker-compose up -d
+```
+
+View the logs to find the initial admin password.
+```
+docker-compose logs
+```
+
+Head to `localhost:8080` to finish the setup.
 
 # Deployment
 
