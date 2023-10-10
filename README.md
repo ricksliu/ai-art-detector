@@ -60,6 +60,17 @@ ng serve
 
 The frontend should now be live at http://localhost:4200.
 
+## Frontend Deployment
+Create a production build in `dist/frontend`:
+```
+ng build --configuration production
+```
+
+Deploy the build to S3:
+```
+aws s3 sync dist/frontend s3://ai-art-detector.ricksliu.dev
+```
+
 ## Local Backend Setup
 
 Navigate to the source directory:
@@ -92,6 +103,87 @@ python manage.py runserver
 
 The backend should now be live at http://localhost:8000.
 
+## Backend Deployment
+
+Navigate to the source directory:
+```
+cd src/backend
+```
+
+Build the Docker images:
+```
+docker-compose -f compose.dev.yaml build  # Or compose.prod.yaml
+```
+
+Login to the ECR repository:
+```
+aws ecr get-login-password --region ca-central-1 | docker login --username AWS --password-stdin 310294657566.dkr.ecr.ca-central-1.amazonaws.com
+```
+
+Push the Docker images to the ECR repository:
+```
+docker-compose -f compose.staging.yaml push  # Or compose.prod.yaml
+```
+
+Copy the secrets over to the EC2 instance:
+```
+scp -r -i <path-to-pem-cert> env ec2-user@15.156.44.97:ai-art-detector/src/backend/
+```
+
+SSH into the EC2 instance:
+```
+ssh -i <path-to-pem-cert> ec2-user@15.156.44.97
+```
+
+Navigate to the project directory and pull the code from GitHub:
+```
+cd ai-art-detector
+git pull
+```
+
+Pull the Docker images from the ECR repository:
+```
+docker pull 310294657566.dkr.ecr.ca-central-1.amazonaws.com/ai-art-detector:app
+docker pull 310294657566.dkr.ecr.ca-central-1.amazonaws.com/ai-art-detector:nginx-proxy
+```
+
+Navigate to the source directory:
+```
+cd src/backend
+```
+
+Build the Docker images:
+```
+docker-compose -f compose.dev.yaml build  # Or compose.prod.yaml
+```
+
+Run the containers:
+```
+docker-compose -f compose.staging.yaml up -d  # Or compose.prod.yaml
+```
+
+## Other Docker Commands
+
+Navigate to the source directory:
+```
+cd src/backend
+```
+
+To check the logs:
+```
+docker-compose -f compose.dev.yaml logs -f  # Or compose.staging.yaml, compose.prod.yaml
+```
+
+To bash into a running container:
+```
+docker exec -it <container> bash
+```
+
+To stop the containers:
+```
+docker-compose -f compose.dev.yaml down -v  # Or compose.staging.yaml, compose.prod.yaml
+```
+
 ## Training the Model
 
 Navigate to the source directory:
@@ -119,71 +211,3 @@ python -m data.scripts.train
 ```
 
 To use the new model with the backend, update the `MODEL_VER` setting in `src/backend/app/settings.py` with the name of the new model.
-
-## Docker Commands
-
-Navigate to the source directory:
-```
-cd src/backend
-```
-
-To build the images:
-```
-docker-compose -f compose.dev.yaml build  # Or compose.staging.yaml, compose.prod.yaml
-```
-
-To run the containers:
-```
-docker-compose -f compose.dev.yaml up -d
-```
-
-To check the logs:
-```
-docker-compose -f compose.dev.yaml logs -f
-```
-
-To bash into a running container:
-```
-docker exec -it <container> bash
-```
-
-To stop the containers:
-```
-docker-compose -f compose.dev.yaml down
-```
-The `-v` option stops all volumes as well.
-
-
-## AWS Commands
-
-Navigate to the source directory:
-```
-cd src/backend
-```
-
-To copy local files over to the EC2 instance:
-```
-scp -i <path-to-pem-cert> <src-file-on-local> ec2-user@15.156.44.97:<dest-path-on-ec2>
-```
-The `-r` option copies directories.
-
-To SSH into the EC2 instance:
-```
-ssh -i <path-to-pem-cert> ec2-user@15.156.44.97
-```
-
-To login to the ECR repository:
-```
-aws ecr get-login-password --region ca-central-1 | docker login --username AWS --password-stdin 310294657566.dkr.ecr.ca-central-1.amazonaws.com
-```
-
-To push the Docker images to the ECR repository:
-```
-docker-compose -f compose.staging.yaml push  # Or compose.prod.yaml
-```
-
-To pull the Docker images from the ECR repository:
-```
-docker pull 310294657566.dkr.ecr.ca-central-1.amazonaws.com/ai-art-detector:app
-docker pull 310294657566.dkr.ecr.ca-central-1.amazonaws.com/ai-art-detector:nginx-proxy
-```

@@ -22,6 +22,6 @@ from web import views
 
 
 urlpatterns = [
-    path('api/v1/images/', views.WebImageList.as_view()),
+    path('images/', views.WebImageList.as_view()),
     path('admin/', admin.site.urls),
 ]

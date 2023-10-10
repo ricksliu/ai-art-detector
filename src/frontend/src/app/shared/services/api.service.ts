@@ -2,7 +2,7 @@ import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { API_URL } from '../constants';
+import { environment } from 'src/environments/environment';
 import { ImageRequest, ImageResponse } from '../models/api.model';
 
 /** Service for handling the backend API. */
@@ -19,6 +19,6 @@ export class ApiService {
    * @returns The API's prediction of the `ImageRequest`.
    */
   postImage(body: ImageRequest): Observable<ImageResponse> {
-    return this.http.post<ImageResponse>(API_URL + 'images/', body);
+    return this.http.post<ImageResponse>(environment.api + 'images/', body);
   }
 }
