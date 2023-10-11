@@ -146,7 +146,9 @@ To use the new model with the backend, update the `MODEL_VER` setting in `src/ba
 
 # Deployment
 
-## Manual Frontend Deployment
+Frontend deployment is now handled by Jenkins. Backend deployment is still handled manually for now.
+
+## Manual Frontend Deployment (Deprecated)
 
 Navigate to the directory:
 ```
@@ -175,6 +177,11 @@ Build the Docker images:
 docker-compose -f compose.prod.yaml build
 ```
 
+Login to the ECR repository if necessary:
+```
+aws ecr get-login-password --region ca-central-1 | docker login --username AWS --password-stdin 310294657566.dkr.ecr.ca-central-1.amazonaws.com
+```
+
 Push the Docker images to the ECR repository:
 ```
 docker-compose -f compose.prod.yaml push
@@ -196,7 +203,7 @@ cd ai-art-detector
 git pull
 ```
 
-Login to the ECR repository:
+Login to the ECR repository if necessary:
 ```
 aws ecr get-login-password --region ca-central-1 | docker login --username AWS --password-stdin 310294657566.dkr.ecr.ca-central-1.amazonaws.com
 ```

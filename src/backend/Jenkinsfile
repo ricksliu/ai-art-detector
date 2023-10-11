@@ -1,0 +1,35 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Build') {  // TODO: com.jcraft.jsch.JSchException: Auth fail
+            steps {
+                dir('src/backend') {
+                    script {
+                        def remote = [:]
+                        remote.name = 'ec2-user'
+                        remote.host = '15.156.44.97'
+                        remote.allowAnyHosts = true
+                        withCredentials([sshUserPrivateKey(credentialsId: '4aa564f0-b77c-4817-aab5-0cdcb19ad119', keyFileVariable: 'identity', passphraseVariable: '', usernameVariable: 'username')]) {
+                            remote.user = username
+                            remote.identityFile = identity
+                            sshCommand remote: remote, command: 'cd ai-art-detector/src/backend'
+                            sshCommand remote: remote, command: 'git pull'
+                            sshCommand remote: remote, command: 'docker-compose -f compose.prod.yaml down -v'
+                            sshCommand remote: remote, command: 'docker-compose -f compose.prod.yaml build'
+                            sshCommand remote: remote, command: 'aws ecr get-login-password --region ca-central-1 | docker login --username AWS --password-stdin 310294657566.dkr.ecr.ca-central-1.amazonaws.com'
+                            sshCommand remote: remote, command: 'docker-compose -f compose.prod.yaml push'
+                            sshCommand remote: remote, command: 'docker-compose -f compose.prod.yaml up -d'
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
