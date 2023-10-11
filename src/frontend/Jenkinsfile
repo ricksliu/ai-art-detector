@@ -35,7 +35,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 dir('src/frontend') {
-                    withAWS(credentials:'3acc725d-b286-4484-bb14-6d00c6a063af') {
+                    withAWS(region:'ca-central-1', credentials:'3acc725d-b286-4484-bb14-6d00c6a063af') {
                         s3Upload(file:'dist/frontend', bucket:'ai-art-detector.ricksliu.dev')
                     }                    
                 }
