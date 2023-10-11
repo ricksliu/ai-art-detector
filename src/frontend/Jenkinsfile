@@ -19,7 +19,15 @@ pipeline {
         stage('Build') {
             steps {
                 dir('src/frontend') {
-                    bat 'npm run ng -- build --configuration production'
+                    bat 'npm run build-prod'
+                }
+            }
+        }
+
+        stage('Test') {
+            steps {
+                dir('src/frontend') {
+                    bat 'npm run test-prod'
                 }
             }
         }
@@ -27,7 +35,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 dir('src/frontend') {
-                    withAWS(credentials:'AWS') {
+                    withAWS(credentials:'3acc725d-b286-4484-bb14-6d00c6a063af') {
                         s3Upload(file:'dist/frontend', bucket:'s3://ai-art-detector.ricksliu.dev')
                     }                    
                 }
