@@ -16,7 +16,7 @@ The frontend single-page application is built using Angular. The backend is buil
 
 ## Data
 
-The model was trained on ~20k images from a combination of datasets:
+The model was trained on ~50k images from a combination of datasets:
 
 - [laion2B-en](https://huggingface.co/datasets/laion/laion2B-en): Subset of LAION-5B, the dataset used to train the original version of the text-to-image model Stable Diffusion.
 
